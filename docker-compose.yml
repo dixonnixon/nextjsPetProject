@@ -1,0 +1,45 @@
+version: '3.4'
+services:
+  # auth-backend:
+  #   build:
+  #     context: ./auth-backend
+  #   ports:
+  #   - "3001:3001"
+  #   networks:
+  #     - dev
+
+  # client:
+  #   build:
+  #     context: ./client
+  #   volumes:
+  #     - staticbuild:/app/out
+  #   networks:
+  #     - dev
+
+  nextjs:
+    container_name: nextjs
+    build: ./app
+    ports:
+      - "3000:3000"
+    networks:
+      - dev
+  
+  nginx:
+    container_name: web
+    build: 
+      context: ./nginx
+    volumes:
+      - staticbuild:/var/www/app/public
+    ports:
+      - "80:80"
+    networks:
+      - dev
+
+networks:
+  dev:
+    driver: bridge
+
+volumes:
+  staticbuild:
+    driver:
+      local
